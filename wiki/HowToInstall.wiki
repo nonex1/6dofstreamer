@@ -1,0 +1,9 @@
+#summary Installing
+
+= Introduction =
+
+In order to install this library, make sure you have installed the Non-Commercial faceAPI License v3.1.3  
+It can be downloaded from here:
+http://www.seeingmachines.com/product/faceapi/downloads/
+
+After it is installed, simply run the Socket.exe file, which is in the http://6dofstreamer.googlecode.com/files/faceapistreamer0.9.zip file. The program should start streaming head position and rotation.
