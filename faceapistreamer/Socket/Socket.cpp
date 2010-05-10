@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "SocketConnector.h"
 
+
 using namespace std;
 
 CRITICAL_SECTION criticalSection;
@@ -45,7 +46,7 @@ smReturnCode saveToPNGFile(const std::string& filepath, smImageInfo image_info)
 }
 
 // Handles head-tracker face-data callbacks
-void STDCALL receiveFaceData(void *, smEngineFaceData face_data)
+void STDCALL receiveFaceData(void *, smEngineFaceData face_data, smCameraVideoFrame video_frame)
 {   
     static int num_face_textures = 0;
     // If face_data contains a texture, save it to disk as a PNG file.
@@ -67,8 +68,9 @@ void STDCALL receiveFaceData(void *, smEngineFaceData face_data)
 }
 
 // Handles head-tracker head-pose callbacks
-void STDCALL receiveHeadPose(void *,smEngineHeadPoseData head_pose)
+void STDCALL receiveHeadPose(void *,smEngineHeadPoseData head_pose, smCameraVideoFrame video_frame)
 {
+	if(&head_pose!=NULL){
     // Make output readable
     fixed(cout);
     showpos(cout);
@@ -86,9 +88,15 @@ void STDCALL receiveHeadPose(void *,smEngineHeadPoseData head_pose)
     cout << "conf " << head_pose.confidence;
     cout << endl;
 
-	head->x = rad2deg(head_pose.head_rot.x_rads);
-	head->y = rad2deg(head_pose.head_rot.y_rads);
-	head->z = rad2deg(head_pose.head_rot.z_rads);
+	EnterCriticalSection(&criticalSection);
+		head->x  = head_pose.head_pos.x;
+		head->y  = head_pose.head_pos.y;
+		head->z  = head_pose.head_pos.z;
+		head->rx = rad2deg(head_pose.head_rot.x_rads);
+		head->ry = rad2deg(head_pose.head_rot.y_rads);
+		head->rz = rad2deg(head_pose.head_rot.z_rads);	
+	LeaveCriticalSection(&criticalSection);
+	}
 
 }
 
@@ -141,6 +149,10 @@ smCameraHandle createFirstCamera()
 // The main function
 void run()
 {
+	try
+  {
+
+
     // Get the version
     int major, minor, maint;
     THROW_ON_ERROR(smAPIVersion(&major, &minor, &maint));
@@ -224,6 +236,14 @@ void run()
     // Destroy video display
     THROW_ON_ERROR(smVideoDisplayDestroy(&video_display_handle));
 
+	  }
+  catch (...)
+  {
+    cout << "An exception occurred. Exception Nr. " << endl;
+	exit(0);
+  }
+
+
 } // run()
 
 void read6dof(void* parameter){
@@ -249,31 +269,39 @@ void read6dof(void* parameter){
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	InitializeCriticalSection(&criticalSection);
-	head = new Head();
-	head->x = 0.5f;
-	head->y = 40.0f;
-	head->z = -40.0f;
-	
-	_beginthread(createSocket,0,NULL);
-	_beginthread(read6dof,0,NULL);
-
-	int count = 0;
-	while(1){
-
-		float headx;
-		scanf("%f",&headx);
+	try{
+		InitializeCriticalSection(&criticalSection);
+		head = new Head();
+		head->x = 0.5f;
+		head->y = 40.0f;
+		head->z = -40.0f;
 		
-		//count++;
-		//if(count % 10000 == 0){
-			//Sleep(15);
-			head->x = headx;
-			//EnterCriticalSection(&criticalSection);
-				
-			//LeaveCriticalSection(&criticalSection);
-		
+		_beginthread(createSocket,0,NULL);
+		//_beginthread(read6dof,0,NULL);
+
+		int count = 0;
+
+		read6dof(NULL);
+		/*while(1){
+				Sleep(1000);*/
+
+		/*	float headx;
+			scanf("%f",&headx);*/
+			
+			//count++;
+			//if(count % 10000 == 0){
+				//Sleep(15);
+				//head->x = headx;
+				//EnterCriticalSection(&criticalSection);
+					
+				//LeaveCriticalSection(&criticalSection);
+			
+			//}
+
 		//}
-
+	}
+	catch(...){
+		cout << "Unhandled exception" << endl;
 	}
 
     return 0;

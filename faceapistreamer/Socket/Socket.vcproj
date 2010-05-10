@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\SeeingMachines\FaceTrackingAPI_NC 3.0\API\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -60,7 +61,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="WS2_32.lib Mswsock.lib Advapi32.lib smft30.lib"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="&quot;C:\Program Files\Microsoft SDKs\Windows\v6.0\VC\LIB&quot;;&quot;C:\Program Files\SeeingMachines\FaceTrackingAPI_NC 3.0\API\bin&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -114,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\SeeingMachines\FaceTrackingAPI_NC 3.0\API\include&quot;"
+				AdditionalIncludeDirectories="&quot;C:\Program Files\SeeingMachines\FaceTrackingAPI_NC 3.1\API\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -133,10 +136,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="WS2_32.lib Mswsock.lib Advapi32.lib smft30.lib"
+				AdditionalDependencies="WS2_32.lib Mswsock.lib Advapi32.lib smft31.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;C:\Program Files\SeeingMachines\FaceTrackingAPI_NC 3.0\API\bin&quot;"
-				GenerateDebugInformation="false"
+				AdditionalLibraryDirectories="&quot;C:\Program Files\Microsoft SDKs\Windows\v6.0\VC\LIB&quot;;&quot;C:\Program Files\SeeingMachines\FaceTrackingAPI_NC 3.1\API\bin&quot;"
+				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
