@@ -95,6 +95,7 @@ void STDCALL receiveHeadPose(void *,smEngineHeadPoseData head_pose, smCameraVide
 		head->rx = rad2deg(head_pose.head_rot.x_rads);
 		head->ry = rad2deg(head_pose.head_rot.y_rads);
 		head->rz = rad2deg(head_pose.head_rot.z_rads);	
+		head->confidence  = head_pose.confidence; // by Murivan on 07/11/2011 to export also confidence value
 	LeaveCriticalSection(&criticalSection);
 	}
 

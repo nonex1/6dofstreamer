@@ -97,8 +97,8 @@ printf("Here13\n");
 	//iResult = recv(ListenSocket,recvbuf,recvbuflen,0);
 	Sleep(15);
 	EnterCriticalSection(&headCriticalSection);
-	sprintf(sentbuf, "%lf %lf %lf %lf %lf %lf",head->x, head->y, head->z, 
-		head->rx, head->ry, head->rz);
+	sprintf(sentbuf, "%lf %lf %lf %lf %lf %lf %lf",head->x, head->y, head->z, 
+		head->rx, head->ry, head->rz, head->confidence);// by Murivan on 07/11/2011 to export also confidence value
 	LeaveCriticalSection(&headCriticalSection);
 	sockaddr_in RecvAddr;
 	RecvAddr.sin_family = AF_INET;
